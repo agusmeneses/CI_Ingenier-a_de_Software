@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <input type="number" id="numberInput" min="1" max="100" placeholder="Ingrese un número del 1 al 100">
+        <button id="generateButton">Generar Ruleta</button>
+        <div id="wheelContainer">
+            <canvas id="wheelCanvas" width="500" height="500"></canvas>
+            <div id="pointer"></div>
+        </div>
+        <button id="spinButton" disabled>Tirar</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
