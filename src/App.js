@@ -21,8 +21,7 @@ const App = () => {
   const drawWheel = (numbers) => {
     const wheelCanvas = document.getElementById('wheelCanvas');
     const ctx = wheelCanvas.getContext('2d');
-    const num = numbers.length;
-    const angleStep = (2 * Math.PI) / num;
+    const angleStep = (2 * Math.PI) / numbers.length;
     const radius = wheelCanvas.width / 2;
 
     ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
@@ -50,7 +49,6 @@ const App = () => {
   };
 
   const spinWheel = () => {
-    const num = numbers.length;
     const initialDuration = 5000; // Duration of the initial constant speed spin in milliseconds
     const additionalDuration = (Math.random() * 4 + 1) * 1000; // Random additional duration between 1 and 5 seconds in milliseconds
     const totalDuration = initialDuration + additionalDuration;
@@ -119,4 +117,3 @@ const App = () => {
 };
 
 export default App;
-
