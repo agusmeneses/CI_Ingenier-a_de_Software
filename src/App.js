@@ -23,20 +23,27 @@ const App = () => {
     const ctx = wheelCanvas.getContext('2d');
     const angleStep = (2 * Math.PI) / numbers.length;
     const radius = wheelCanvas.width / 2;
-
+  
     ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-
+  
     numbers.forEach((number, index) => {
       const startAngle = index * angleStep;
       const endAngle = startAngle + angleStep;
-
+  
       ctx.beginPath();
       ctx.moveTo(radius, radius);
       ctx.arc(radius, radius, radius, startAngle, endAngle);
-      ctx.fillStyle = index % 2 === 0 ? '#C19A6B' : '#E8D5B9';
+  
+      // Cambio de color dependiendo de si el índice es par o impar
+      if (numbers.length % 2 === 0) {
+        ctx.fillStyle = index % 2 === 0 ? '#C19A6B' : '#E8D5B9';
+      } else {
+        ctx.fillStyle = index % 3 === 0 ? '#C19A6B' : index % 3 === 1 ? '#E8D5B9' : '#6F7B8A';
+      }
+  
       ctx.fill();
       ctx.stroke();
-
+  
       ctx.save();
       ctx.translate(radius, radius);
       ctx.rotate(startAngle + angleStep / 2);
@@ -47,6 +54,7 @@ const App = () => {
       ctx.restore();
     });
   };
+  
 
   const spinWheel = () => {
     const initialDuration = 3000; // Duration of the initial constant speed spin in milliseconds

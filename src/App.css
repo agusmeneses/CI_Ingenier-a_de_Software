@@ -16,6 +16,8 @@ body {
   margin: 20px auto;
   width: 500px;
   height: 500px;
+  background-color: #ecc6b9;
+  border-radius: 50%;
 }
 
 canvas {
@@ -31,7 +33,7 @@ canvas {
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 20px solid red;
+  border-top: 20px solid rgb(156, 13, 13);
   transform: translate(-50%, -50%);
 }
 
@@ -39,7 +41,7 @@ button {
   margin: 10px;
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #ecc6b9; /* Color de fondo bonito */
+  background-color: #ecc6b9; 
   border: none;
   border-radius: 20px; /* Bordes redondeados */
   cursor: pointer;
