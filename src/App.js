@@ -49,12 +49,12 @@ const App = () => {
   };
 
   const spinWheel = () => {
-    const initialDuration = 5000; // Duration of the initial constant speed spin in milliseconds
+    const initialDuration = 3000; // Duration of the initial constant speed spin in milliseconds
     const additionalDuration = (Math.random() * 4 + 1) * 1000; // Random additional duration between 1 and 5 seconds in milliseconds
     const totalDuration = initialDuration + additionalDuration;
-    const initialSpeed = 360 / 1000; // Speed in degrees per millisecond (one rotation per second)
+    const initialSpeed = 560 / 1000; // Speed in degrees per millisecond (one rotation per second)
     const start = performance.now();
-    const randomAngle = Math.random() * 360; // Random angle to add to the initial angle
+    const randomAngle = Math.random() * -360; // Random angle to add to the initial angle
 
     function animate(time) {
       const elapsed = time - start;
@@ -70,9 +70,6 @@ const App = () => {
         const easeOutQuad = t => t * (2 - t); // Ease out quadratic function
         const currentSpeed = initialSpeed * (1 - easeOutQuad(progress));
         let currentAngle = (initialSpeed * initialDuration + currentSpeed * (elapsed - initialDuration)) % 360;
-        if (currentAngle < 0) {
-          currentAngle += 360; // Ensure the angle is positive
-        }
         currentAngle += randomAngle; // Add random angle
         drawRotatedWheel(currentAngle);
         requestAnimationFrame(animate);
