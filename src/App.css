@@ -4,7 +4,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom, #b4a5a5, #ece1df); /* Fondo de gradiente con colores pastel */
+  background: linear-gradient(to bottom, #b4a5a5, #ece1df);
 }
 
 .container {
@@ -16,12 +16,12 @@ body {
   margin: 20px auto;
   width: 500px;
   height: 500px;
-  background-color: #ecc6b9;
+  background-color: #efd6d4;
   border-radius: 50%;
 }
 
 canvas {
-  border: 2px solid #483737; /* Color marrón pastel para el borde */
+  border: 2px solid #483737;
   border-radius: 50%;
 }
 
@@ -41,13 +41,31 @@ button {
   margin: 10px;
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #ecc6b9; 
+  background-color: #af9288;
   border: none;
-  border-radius: 20px; /* Bordes redondeados */
+  border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #b5a89d; /* Cambio de color de fondo al pasar el ratón */
+  background-color: #b5a89d;
 }
+
+input[type="number"] {
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 2px solid #af9288;
+  border-radius: 20px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+  background-color: rgba(255, 255, 255, 0.8);
+  outline: none;
+}
+
