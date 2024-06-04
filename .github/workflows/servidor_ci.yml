@@ -32,8 +32,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
+          git config --global user.name 'agusmeneses'
+          git config --global user.email 'agusmeneses0@gmail.com'
           git checkout -b pr-from-develop
           git push https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }} pr-from-develop
           curl -X POST -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
