@@ -11,5 +11,5 @@ jobs:
         env:
           ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
           AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-          TO_WHATSAPP_NUMBER: +543794709835
+          TO_WHATSAPP_NUMBER: ${{ secrets.TO_WHATSAPP_NUMBER }}
 
