@@ -1,0 +1,36 @@
+name: Notificaciones de WhatsApp
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  send-whatsapp-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener información de la rama
+        id: branch-info
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+      
+      - name: Determinar tipo de evento
+        id: event-type
+        run: echo "::set-output name=event::${{ github.event_name }}"
+      
+      - name: Enviar notificación a WhatsApp
+        uses: twilio-labs/action-send-whatsapp@v1
+        with:
+          account_sid: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          auth_token: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          from: 'whatsapp:+13343782133'  # Tu número de WhatsApp
+          to: 'whatsapp:+543794709835'    # Número de destino
+          body: |
+            Se realizó un {{ steps.event-type.outputs.event }} en la rama ${{ steps.branch-info.outputs.branch }} del repositorio.
+            {% if steps.event-type.outputs.event == 'pull_request' %}
+            Puedes ver la solicitud de pull request aquí: ${{ github.event.pull_request.html_url }}.
+            {% endif %}
+
