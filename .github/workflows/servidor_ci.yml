@@ -27,7 +27,7 @@ jobs:
       - name: Correr los tests
         run: npm test
 
-      - name: Crear PR a main si los tests pasan
+      - name: Crear PR a main
         if: success()
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
