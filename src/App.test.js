@@ -2,6 +2,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react';
 import App from './App';
 
+// Mock para window.alert
+window.alert = jest.fn();
+
 test('valor ingresado no es cero ni menor a cero', () => {
   act(() => {
     render(<App />);
@@ -21,4 +24,5 @@ test('valor ingresado no es 101 ni mayor', () => {
   fireEvent.click(screen.getByText(/Crear Ruleta/i));
   expect(window.alert).toHaveBeenCalledWith('Por favor, ingrese un número del 1 al 100');
 });
+
 
