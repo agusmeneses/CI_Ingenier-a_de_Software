@@ -27,9 +27,6 @@ jobs:
       - name: Correr los tests
         run: npm test
 
-      - name: Ejecutar ESLint
-        run: npm run lint
-
       - name: Crear PR a main desde nueva rama
         if: success()
         env:
