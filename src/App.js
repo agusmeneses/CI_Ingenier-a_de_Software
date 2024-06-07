@@ -60,9 +60,9 @@ const App = () => {
     const initialDuration = 3000; // Duration of the initial constant speed spin in milliseconds
     const additionalDuration = (Math.random() * 4 + 1) * 1000; // Random additional duration between 1 and 5 seconds in milliseconds
     const totalDuration = initialDuration + additionalDuration;
-    const initialSpeed = 560 / 1000; // Speed in degrees per millisecond (one rotation per second)
+    const initialSpeed = 1; // Speed in degrees per millisecond (one rotation per second)
     const start = performance.now();
-    const randomAngle = Math.random() * -360; // Random angle to add to the initial angle
+    const randomAngle = Math.random() * 360; // Random angle to add to the initial angle
 
     function animate(time) {
       const elapsed = time - start;
