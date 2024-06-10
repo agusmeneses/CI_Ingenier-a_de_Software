@@ -4,7 +4,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to bottom, #b4a5a5, #ece1df);
+  background: linear-gradient(to bottom, #443d3d, #ece1df);
 }
 
 .container {
