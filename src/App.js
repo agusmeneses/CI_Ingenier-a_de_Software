@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
 
-Esto provoca un error?
-
 const App = () => {
   const [numbers, setNumbers] = useState([]);
   const [numberInput, setNumberInput] = useState('');
