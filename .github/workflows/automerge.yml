@@ -1,0 +1,20 @@
+name: AutoMergePullRequests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Auto Merge Pull Requests
+        uses: pascalgn/automerge-action@v0.16.3
+        with:
+          GITHUB_TOKEN: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          MERGE_LABELS: ""
+          MERGE_METHOD: merge
