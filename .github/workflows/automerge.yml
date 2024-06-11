@@ -12,9 +12,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Auto Merge Pull Requests
-        uses: pascalgn/automerge-action@v0.16.3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          GITHUB_TOKEN: "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+          node-version: '14'
+
+      - name: Auto Merge Pull Requests
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: ""
-          MERGE_METHOD: merge
+        run: npx pascalgn/automerge-action@v0.16.3
+
