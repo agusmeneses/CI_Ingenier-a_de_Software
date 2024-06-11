@@ -29,6 +29,7 @@ jobs:
 
       - name: Crear Pull Request a la rama main desde nueva rama
         if: success()
+        id: create_pr
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
@@ -36,10 +37,57 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git checkout -b pr-develop
           git push https://oauth2:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }} pr-develop
-          curl -X POST -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+          PR_URL=$(curl -s -X POST -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
                -d '{"title":"PR: Merge develop into main","head":"pr-develop","base":"main"}' \
                -H "Content-Type: application/json" \
-               https://api.github.com/repos/${{ github.repository }}/pulls
+               https://api.github.com/repos/${{ github.repository }}/pulls | jq -r '.url')
+          echo "pr_url=${PR_URL}" >> $GITHUB_ENV
+
+  auto-merge:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Esperar a que los checks pasen
+        uses: actions/github-script@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PR_URL: ${{ env.PR_URL }}
+        with:
+          script: |
+            const prUrl = process.env.PR_URL;
+            const prNumber = prUrl.split('/').pop();
+            const { Octokit } = require("@octokit/rest");
+            const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+
+            let allChecksPassed = false;
+            while (!allChecksPassed) {
+              await new Promise(resolve => setTimeout(resolve, 60000)); // Esperar 1 minuto
+              const { data } = await octokit.checks.listForRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `pr-develop`
+              });
+              allChecksPassed = data.check_runs.every(check => check.conclusion === 'success');
+            }
+
+            const { data: pr } = await octokit.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            if (pr.mergeable) {
+              await octokit.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                merge_method: 'merge'
+              });
+            } else {
+              throw new Error('El PR no es mergeable');
+            }
+
 
 
 
