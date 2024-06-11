@@ -29,7 +29,6 @@ jobs:
 
       - name: Crear Pull Request a la rama main desde nueva rama
         if: success()
-        id: create_pr
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
@@ -37,39 +36,10 @@ jobs:
           git config --global user.email 'github-actions@github.com'
           git checkout -b pr-develop
           git push https://oauth2:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/${{ github.repository }} pr-develop
-          PR_URL=$(curl -s -X POST -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+          curl -X POST -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
                -d '{"title":"PR: Merge develop into main","head":"pr-develop","base":"main"}' \
                -H "Content-Type: application/json" \
-               https://api.github.com/repos/${{ github.repository }}/pulls | jq -r '.html_url')
-          echo "PR_URL=${PR_URL}" >> $GITHUB_ENV
-
-  auto-merge:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Configura GitHub CLI
-        run: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0 && \
-             echo "deb [arch=amd64] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list && \
-             sudo apt update && sudo apt install gh -y
-
-      - name: Autenticarse en GitHub CLI
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        run: gh auth login --with-token <<< "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
-
-      - name: Esperar a que los checks pasen y fusionar el PR
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          PR_URL: ${{ env.PR_URL }}
-        run: |
-          PR_NUMBER=$(echo "${PR_URL}" | awk -F '/' '{print $NF}')
-          while ! gh pr checks "${PR_NUMBER}" --repo ${{ github.repository }} --json status,state | jq -e '.[].state == "success"' > /dev/null; do
-            echo "Esperando a que los checks pasen..."
-            sleep 60
-          done
-          gh pr merge "${PR_NUMBER}" --repo ${{ github.repository }} --merge --delete-branch
-
+               https://api.github.com/repos/${{ github.repository }}/pulls
 
 
 
