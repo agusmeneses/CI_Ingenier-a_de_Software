@@ -1,6 +1,6 @@
 # Ruleta
 
-Aplicación de Ruleta realizada en React, para la cátedra de Ingeniería de Software de la carrera Ingeniería en Sistemas de la UTN Facultad Regional Resistencia.
+Aplicación de Ruleta realizada en React, para la cátedra de Ingeniería de Software de la carrera Ingeniería en Sistemas de la Universidad Tecnológica Nacional, Facultad Regional Resistencia.
 
 
 # Objetivos del trabajo
