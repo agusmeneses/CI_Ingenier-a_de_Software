@@ -7,6 +7,6 @@ Aplicación de Ruleta realizada en React, para la cátedra de Ingeniería de Sof
 
 El objetivo del trabajo es crear mediante distintas tecnologías un servidor de Integración Continua que cumpla las funciones necesarias para mantener, integrar y realizar test automatizados del código.
 
-Prueba 2
+Prueba 123
 
 
