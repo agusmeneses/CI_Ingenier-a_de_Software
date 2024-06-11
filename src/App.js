@@ -109,7 +109,7 @@ const App = () => {
         max="100"
         placeholder="Ingrese un número del 1 al 100"
       />
-      <button onClick={generateWheel}>Crear Ruleta</button>
+      <button onClick={generateWheel}>Generar Ruleta</button>
       <div id="wheelContainer">
         <canvas id="wheelCanvas" width="500" height="500"></canvas>
         <div id="pointer"></div>
