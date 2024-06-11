@@ -5,6 +5,6 @@ Aplicación de Ruleta realizada en React, para la cátedra de Ingeniería de Sof
 
 # Objetivos del trabajo
 
-El objetivo del trabajo es crear mediante distintas tecnologías un servidor de IC (Integración Continua) que cumpla las funciones necesarias para mantener, integrar y realizar test automatizados del código.
+El objetivo del trabajo es crear mediante distintas tecnologías un servidor de Integración Continua que cumpla las funciones necesarias para mantener, integrar y realizar test automatizados del código.
 
 
