@@ -40,54 +40,35 @@ jobs:
           PR_URL=$(curl -s -X POST -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
                -d '{"title":"PR: Merge develop into main","head":"pr-develop","base":"main"}' \
                -H "Content-Type: application/json" \
-               https://api.github.com/repos/${{ github.repository }}/pulls | jq -r '.url')
-          echo "pr_url=${PR_URL}" >> $GITHUB_ENV
+               https://api.github.com/repos/${{ github.repository }}/pulls | jq -r '.html_url')
+          echo "PR_URL=${PR_URL}" >> $GITHUB_ENV
 
   auto-merge:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Esperar a que los checks pasen
-        uses: actions/github-script@v6
+      - name: Configurar GitHub CLI
+        run: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0 && \
+             echo "deb [arch=amd64] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list && \
+             sudo apt update && sudo apt install gh -y
+
+      - name: Autenticarse en GitHub CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: gh auth login --with-token <<< "${{ secrets.PERSONAL_ACCESS_TOKEN }}"
+
+      - name: Esperar a que los checks pasen y fusionar el PR
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           PR_URL: ${{ env.PR_URL }}
-        with:
-          script: |
-            const prUrl = process.env.PR_URL;
-            const prNumber = prUrl.split('/').pop();
-            const { Octokit } = require("@octokit/rest");
-            const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-
-            let allChecksPassed = false;
-            while (!allChecksPassed) {
-              await new Promise(resolve => setTimeout(resolve, 60000)); // Esperar 1 minuto
-              const { data } = await octokit.checks.listForRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: `pr-develop`
-              });
-              allChecksPassed = data.check_runs.every(check => check.conclusion === 'success');
-            }
-
-            const { data: pr } = await octokit.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber
-            });
-
-            if (pr.mergeable) {
-              await octokit.pulls.merge({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber,
-                merge_method: 'merge'
-              });
-            } else {
-              throw new Error('El PR no es mergeable');
-            }
-
+        run: |
+          PR_NUMBER=$(echo "${PR_URL}" | awk -F '/' '{print $NF}')
+          while ! gh pr checks "${PR_NUMBER}" --repo ${{ github.repository }} --json status,state | jq -e '.[].state == "success"' > /dev/null; do
+            echo "Esperando a que los checks pasen..."
+            sleep 60
+          done
+          gh pr merge "${PR_NUMBER}" --repo ${{ github.repository }} --merge --delete-branch
 
 
 
