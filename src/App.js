@@ -115,7 +115,7 @@ const App = () => {
         <div id="pointer"></div>
       </div>
       <button onClick={spinWheel} disabled={spinButtonDisabled}>
-        Tirar
+        Tirarr
       </button>
     </div>
   );
