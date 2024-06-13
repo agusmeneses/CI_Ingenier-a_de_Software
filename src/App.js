@@ -8,7 +8,7 @@ const App = () => {
 
   const generateWheel = () => {
     const num = parseInt(numberInput);
-    if (num < 1 || num > 100) {
+    if (num < -1 || num > 120) {
       alert('Por favor, ingrese un número del 1 al 100');
       return;
     }
